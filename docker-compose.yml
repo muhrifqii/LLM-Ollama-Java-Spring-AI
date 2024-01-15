@@ -3,7 +3,7 @@ version: "3.5"
 services:
 
   postgres:
-    container_name: postgres
+    container_name: slaking-springbed-ai-postgres
     image: postgres:13.13
     restart: always
     environment:

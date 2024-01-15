@@ -29,6 +29,8 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.springframework:spring-jdbc")
 
+	implementation("org.springframework.ai:spring-ai-ollama-spring-boot-starter:0.8.0-SNAPSHOT")
+
 	compileOnly("org.projectlombok:lombok")
 
 	runtimeOnly("org.postgresql:postgresql")
