@@ -1,10 +1,12 @@
 plugins {
   java
-  alias(libs.plugins.spring.dependencies)
 }
 
 java {
   sourceCompatibility = JavaVersion.VERSION_22
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(22))
+  }
 }
 
 configurations {
@@ -14,8 +16,9 @@ configurations {
 }
 
 dependencies {
-  implementation("io.projectreactor:reactor-core")
+  implementation(libs.reactor.core)
   compileOnly(libs.lombok)
+  annotationProcessor(libs.lombok)
 }
 
 tasks.test {

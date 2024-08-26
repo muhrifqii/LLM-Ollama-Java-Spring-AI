@@ -2,6 +2,7 @@ plugins {
 	java
   alias(libs.plugins.spring.boot) apply false
   alias(libs.plugins.spring.dependencies) apply false
+  alias(libs.plugins.graalvm) apply false
 }
 
 allprojects {

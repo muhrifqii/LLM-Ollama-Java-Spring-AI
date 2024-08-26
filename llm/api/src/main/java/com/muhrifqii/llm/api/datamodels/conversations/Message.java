@@ -8,7 +8,7 @@ public record Message(
         String conversationId,
         Status status,
         String content,
-        long createdAt) {
+        String createdAt) {
 
     public static enum Status {
         STREAMING, FINISHED

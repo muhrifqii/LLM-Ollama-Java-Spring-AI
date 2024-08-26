@@ -9,6 +9,6 @@ pluginManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "SlakingSpringBedAI"
-include("llm:impl")
-include("llm:provider")
+// include("llm:impl")
+include("llm:ollama-provider")
 include("llm:api")
