@@ -36,6 +36,8 @@ dependencies {
   implementation(platform(libs.spring.ai.bom))
 	implementation(libs.spring.ai.ollama)
 
+  testAndDevelopmentOnly(libs.spring.boot.devtools)
+
 	testImplementation(libs.spring.boot.test)
   testImplementation(libs.reactor.test)
 }

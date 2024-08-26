@@ -14,6 +14,7 @@ import com.muhrifqii.llm.services.ChatService;
 
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/ai/ask-once")
@@ -21,6 +22,11 @@ import reactor.core.publisher.Flux;
 public class AskOnceChatController {
 
     private final ChatService chatService;
+
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "Up And Running";
+    }
 
     @PostMapping("/simple")
     public Mono<Message> chat(@RequestBody ConversationRequest input) {
