@@ -24,16 +24,19 @@ public class ChatService implements PromptModelUsecase {
                     .call()
                     .content();
             return Mono.just(
-                    ChatHelper.mapChatContent(conversationID, Message.Status.FINISHED, response));
+                    ChatHelper.mapChatContent(conversationID, response));
         });
     }
 
     @Override
     public Flux<Message> streamChat(String conversationID, UserMessage message) {
-        return chatClient.prompt()
-                .user(message.content())
-                .stream()
-                .content()
-                .map(content -> ChatHelper.mapChatContent(conversationID, Message.Status.STREAMING, content));
+        return Flux.just(ChatHelper.newMessage(conversationID))
+                .flatMap(messageSource -> {
+                    return chatClient.prompt()
+                            .user(message.content())
+                            .stream()
+                            .content()
+                            .map(content -> ChatHelper.mapChatContent(messageSource, content));
+                });
     }
 }

@@ -2,6 +2,7 @@ package com.muhrifqii.llm.controllers;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,7 @@ public class ConversationalChatController {
         return chatService.chat(id, new UserMessage(input.message(), null));
     }
 
-    @PostMapping("/{id}/chat-stream")
+    @PostMapping(value = "/{id}/chat-stream", produces = MediaType.APPLICATION_NDJSON_VALUE)
     public Flux<Message> streamChat(@PathVariable String id, @RequestBody ConversationRequest input) {
         return chatService.streamChat(id, new UserMessage(input.message(), null));
     }

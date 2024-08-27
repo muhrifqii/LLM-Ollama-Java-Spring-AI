@@ -14,6 +14,8 @@ import com.muhrifqii.llm.services.ChatService;
 
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
+
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -33,7 +35,7 @@ public class AskOnceChatController {
         return chatService.chat(null, new UserMessage(input.message(), null));
     }
 
-    @PostMapping("/stream")
+    @PostMapping(value = "/stream", produces = MediaType.APPLICATION_NDJSON_VALUE)
     public Flux<Message> streamChat(@RequestBody ConversationRequest input) {
         return chatService.streamChat(null, new UserMessage(input.message(), null));
     }

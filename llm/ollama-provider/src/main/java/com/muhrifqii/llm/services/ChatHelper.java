@@ -8,13 +8,24 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ChatHelper {
-    public static Message mapChatContent(String conversationID, Message.Status status, String content) {
+    public static Message newMessage(String conversationID) {
         return Message.builder()
                 .id(UUID.randomUUID().toString())
                 .conversationId(conversationID)
-                .status(status)
-                .content(content)
                 .createdAt(DateUtils.nowIsoString())
+                .build();
+    }
+
+    public static Message mapChatContent(String conversationID, String content) {
+        return mapChatContent(newMessage(conversationID), content);
+    }
+
+    public static Message mapChatContent(Message source, String content) {
+        return Message.builder()
+                .id(source.id())
+                .conversationId(source.conversationId())
+                .createdAt(source.createdAt())
+                .content(content)
                 .build();
     }
 

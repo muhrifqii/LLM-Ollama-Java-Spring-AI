@@ -6,11 +6,6 @@ import lombok.Builder;
 public record Message(
         String id,
         String conversationId,
-        Status status,
         String content,
         String createdAt) {
-
-    public static enum Status {
-        STREAMING, FINISHED
-    }
 }
