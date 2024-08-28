@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.muhrifqii.llm.api.datamodels.ConversationRequest;
+import com.muhrifqii.llm.api.datamodels.conversations.ConversationRequest;
 import com.muhrifqii.llm.api.datamodels.conversations.Message;
 import com.muhrifqii.llm.api.datamodels.conversations.UserMessage;
 import com.muhrifqii.llm.services.ChatService;
