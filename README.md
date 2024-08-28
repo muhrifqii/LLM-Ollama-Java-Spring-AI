@@ -1,10 +1,13 @@
-# LLM Ollama - Spring AI, WebFlux, R2DBC - SlakingSpringBed Sample
+# LLM Ollama - Spring AI, WebFlux, R2DBC
 
-The stack:
-- Ollama
-- Spring
-- Spring AI
+Sample project to showcase a java spring boot application with Generative AI powered using Spring AI
+
+## The Stack:
+- Java 22
+- GraalVM
 - Spring WebFlux
 - Spring Data R2DBC
-- Docker
+- Docker/Podman
 - Flyway
+- [Ollama](https://ollama.com)
+
