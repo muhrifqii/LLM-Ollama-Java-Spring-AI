@@ -1,19 +1,29 @@
 package com.muhrifqii.llm.services;
 
+import com.fasterxml.uuid.Generators;
 import com.muhrifqii.llm.api.datamodels.conversations.Conversation;
 import com.muhrifqii.llm.api.datamodels.conversations.Message;
 import com.muhrifqii.llm.api.utils.DateUtils;
+import com.muhrifqii.llm.repositories.MessageEntity;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
+
+import org.springframework.ai.chat.messages.MessageType;
+
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ChatHelper {
+    public static String generateId() {
+        return Generators.timeBasedEpochGenerator()
+                .generate()
+                .toString();
+    }
+
     public static com.muhrifqii.llm.repositories.Conversation newConversation(String name) {
         return new com.muhrifqii.llm.repositories.Conversation(
-                UUID.randomUUID().toString(),
+                generateId(),
                 name,
                 null,
                 null,
@@ -22,8 +32,9 @@ public class ChatHelper {
 
     public static Message newMessage(String conversationID) {
         return Message.builder()
-                .id(UUID.randomUUID().toString())
+                .id(generateId())
                 .conversationId(conversationID)
+                .messageType(MessageType.USER.getValue())
                 .createdAt(DateUtils.nowIsoString())
                 .build();
     }
@@ -37,6 +48,7 @@ public class ChatHelper {
                 .id(source.id())
                 .conversationId(source.conversationId())
                 .createdAt(source.createdAt())
+                .messageType(MessageType.ASSISTANT.getValue())
                 .content(content)
                 .build();
     }
@@ -64,6 +76,26 @@ public class ChatHelper {
                 latest.description(),
                 source.createdAt(),
                 LocalDateTime.now());
+    }
+
+    public static Message mapMessage(MessageEntity source) {
+        return Message.builder()
+                .id(source.id())
+                .conversationId(source.coversationId())
+                .content(source.content())
+                .messageType(source.messageType())
+                .createdAt(DateUtils.toIsoString(source.createdAt()))
+                .build();
+    }
+
+    public static MessageEntity mapFromAi(String conversationId, org.springframework.ai.chat.messages.Message source) {
+        return MessageEntity.builder()
+                .id(generateId())
+                .coversationId(conversationId)
+                .content(source.getContent())
+                .messageType(source.getMessageType().getValue())
+                .createdAt(DateUtils.now())
+                .build();
     }
 
 }
