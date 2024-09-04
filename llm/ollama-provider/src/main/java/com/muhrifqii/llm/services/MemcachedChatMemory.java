@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,10 @@ public class MemcachedChatMemory implements ChatMemory {
 
     @Override
     public void add(String conversationId, List<Message> messages) {
+        if (!isConversationIdValid(conversationId)) {
+            return;
+        }
+
         log.debug("add:{} with {} messages", conversationId, messages.size());
         this.conversationHistory.putIfAbsent(conversationId, new ArrayList<>());
         this.conversationHistory.get(conversationId).addAll(messages);
@@ -29,15 +34,29 @@ public class MemcachedChatMemory implements ChatMemory {
 
     @Override
     public List<Message> get(String conversationId, int lastN) {
+        if (!isConversationIdValid(conversationId)) {
+            return List.of();
+        }
+
         log.debug("get:{}:{}", lastN, conversationId);
         List<Message> all = this.conversationHistory.get(conversationId);
-        return all != null ? all.stream().skip(Math.max(0, all.size() - lastN)).toList() : List.of();
+        return all != null ? all.stream()
+                .skip(Math.max(0, all.size() - lastN))
+                .toList() : List.of();
     }
 
     @Override
     public void clear(String conversationId) {
+        if (!isConversationIdValid(conversationId)) {
+            return;
+        }
+
         log.debug("clear:{}", conversationId);
         this.conversationHistory.remove(conversationId);
+    }
+
+    private boolean isConversationIdValid(String conversationId) {
+        return !AbstractChatMemoryAdvisor.DEFAULT_CHAT_MEMORY_CONVERSATION_ID.equals(conversationId);
     }
 
 }

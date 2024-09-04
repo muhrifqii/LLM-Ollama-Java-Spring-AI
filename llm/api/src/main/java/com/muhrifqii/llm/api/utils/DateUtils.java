@@ -30,4 +30,11 @@ public class DateUtils {
                 .map(DateTimeFormatter.ISO_DATE_TIME::format)
                 .orElse("");
     }
+
+    public static LocalDateTime fromIsoString(String date) {
+        return Optional.ofNullable(date)
+                .map(DateTimeFormatter.ISO_DATE_TIME::parse)
+                .map(LocalDateTime::from)
+                .orElse(null);
+    }
 }

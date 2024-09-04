@@ -27,7 +27,7 @@ public class ChatService implements ChatServiceTrait {
 
     @Override
     public Mono<Message> chat(String conversationID, UserMessage message) {
-        return Mono.fromCallable(() -> chatClient
+        return Mono.fromSupplier(() -> chatClient
                 .prompt()
                 .user(message.content())
                 .advisors(advSpec -> chatMemoryAdvisorSpec(advSpec, conversationID))
@@ -71,7 +71,7 @@ public class ChatService implements ChatServiceTrait {
     }
 
     private void chatMemoryAdvisorSpec(AdvisorSpec advisorSpec, String conversationId) {
-        if (Constants.EMPTY_SLUG.equals(conversationId)) {
+        if (Constants.EMPTY_SLUG.equals(conversationId) || conversationId == null) {
             return;
         }
         advisorSpec.param(AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY, conversationId);

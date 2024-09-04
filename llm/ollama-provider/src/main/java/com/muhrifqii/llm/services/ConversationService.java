@@ -10,7 +10,6 @@ import com.muhrifqii.llm.Constants;
 import com.muhrifqii.llm.api.datamodels.HandledError;
 import com.muhrifqii.llm.api.datamodels.conversations.Conversation;
 import com.muhrifqii.llm.api.datamodels.conversations.Message;
-import com.muhrifqii.llm.api.datamodels.conversations.UserMessage;
 import com.muhrifqii.llm.api.traits.ConversationServiceTrait;
 import com.muhrifqii.llm.repositories.ConversationRepository;
 import com.muhrifqii.llm.repositories.MessageRepository;
@@ -74,13 +73,9 @@ public class ConversationService implements ConversationServiceTrait {
     }
 
     @Override
-    public Mono<Message> saveAssistantMessage(Message message) {
-        return null;
-    }
-
-    @Override
-    public Mono<Message> saveUserMessage(UserMessage userMessage) {
-        return null;
+    public Mono<Message> saveMessage(Message message, boolean newEntity) {
+        return messageRepository.save(ChatHelper.mapMessage(message, newEntity))
+                .map(ChatHelper::mapMessage);
     }
 
     private Mono<Conversation> throwIfConversationIdNotExist(String id) {

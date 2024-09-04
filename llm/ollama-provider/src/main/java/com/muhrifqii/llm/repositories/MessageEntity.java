@@ -7,21 +7,29 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.lang.Nullable;
 
-import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Table("ai_messages")
-@Builder
-public record MessageEntity(
-        @Id String id,
-        String coversationId,
-        String content,
-        String messageType,
-        @CreatedDate LocalDateTime createdAt)
-        implements Persistable<String>, Message {
+@Getter
+@Setter
+@Accessors(fluent = true)
+public class MessageEntity implements Persistable<String>, Message {
+    @Id
+    private String id;
+    private String conversationId;
+    private String content;
+    private String messageType;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @Transient
+    private boolean newEntity;
 
     @Override
     @Nullable
@@ -31,7 +39,7 @@ public record MessageEntity(
 
     @Override
     public boolean isNew() {
-        return createdAt == null;
+        return createdAt == null || newEntity;
     }
 
     @Override
