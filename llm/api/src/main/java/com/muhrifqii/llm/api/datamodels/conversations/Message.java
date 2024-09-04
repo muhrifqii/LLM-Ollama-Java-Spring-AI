@@ -7,5 +7,6 @@ public record Message(
         String id,
         String conversationId,
         String content,
+        String messageType,
         String createdAt) {
 }

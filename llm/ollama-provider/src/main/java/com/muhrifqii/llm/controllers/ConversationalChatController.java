@@ -23,8 +23,8 @@ import com.muhrifqii.llm.api.datamodels.conversations.Conversation;
 import com.muhrifqii.llm.api.datamodels.conversations.ConversationRequest;
 import com.muhrifqii.llm.api.datamodels.conversations.Message;
 import com.muhrifqii.llm.api.datamodels.conversations.UserMessage;
-import com.muhrifqii.llm.services.ChatService;
-import com.muhrifqii.llm.services.ConversationService;
+import com.muhrifqii.llm.api.traits.ChatServiceTrait;
+import com.muhrifqii.llm.api.traits.ConversationServiceTrait;
 
 @RestController
 @RequestMapping("/ai/conversations")
@@ -32,8 +32,8 @@ import com.muhrifqii.llm.services.ConversationService;
 @Slf4j
 public class ConversationalChatController {
 
-    private final ChatService chatService;
-    private final ConversationService conversationService;
+    private final ChatServiceTrait chatService;
+    private final ConversationServiceTrait conversationService;
 
     @GetMapping()
     public Flux<Conversation> getConversations(
@@ -52,18 +52,20 @@ public class ConversationalChatController {
 
     @PostMapping("/{id}/chat-and-wait")
     public Mono<Message> chatAndWait(@PathVariable String id, @RequestBody ConversationRequest input) {
+        final var userMessage = new UserMessage(input.message(), null);
         return conversationService.getOrCreateConversation(id)
                 .doOnNext(conversation -> makeTitle(input, conversation))
                 .flatMap(conversation -> chatService
-                        .chat(conversation.id(), new UserMessage(input.message(), null)));
+                        .chat(conversation.id(), userMessage));
     }
 
     @PostMapping(value = "/{id}/chat-stream", produces = MediaType.APPLICATION_NDJSON_VALUE)
     public Flux<Message> streamChat(@PathVariable String id, @RequestBody ConversationRequest input) {
+        final var userMessage = new UserMessage(input.message(), null);
         return conversationService.getOrCreateConversation(id)
                 .doOnNext(conversation -> makeTitle(input, conversation))
                 .flatMapMany(conversation -> chatService
-                        .streamChat(conversation.id(), new UserMessage(input.message(), null)));
+                        .streamChat(conversation.id(), userMessage));
     }
 
     private void makeTitle(ConversationRequest input, Conversation conversation) {

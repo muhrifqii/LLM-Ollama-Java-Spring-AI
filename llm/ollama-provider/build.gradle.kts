@@ -36,6 +36,13 @@ dependencies {
   implementation(platform(libs.spring.ai.bom))
 	implementation(libs.spring.ai.ollama)
 
+  implementation(libs.micrometer.tracing.otel)
+  implementation(libs.otel.exporter)
+  implementation(libs.micrometer.registry)
+
+  implementation(libs.uuid)
+  implementation(libs.jackson.jsr310)
+
   testAndDevelopmentOnly(libs.spring.boot.devtools)
 
 	testImplementation(libs.spring.boot.test)
