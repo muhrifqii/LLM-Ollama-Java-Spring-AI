@@ -11,6 +11,17 @@ Sample project to showcase a java spring boot application with Generative AI pow
 - Flyway
 - [Ollama](https://ollama.com)
 
+## Prerequisites - Ollama
+
+- Install Ollama on your local machine
+- Run `ollama run llama3.1`
+
+## Running the project
+
+```bash
+make up
+```
+
 ## Video on The Stream Chat Response Feature
 
 

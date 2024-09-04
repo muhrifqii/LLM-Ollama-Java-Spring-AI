@@ -35,7 +35,6 @@ public class ChatHelper {
                 .id(generateId())
                 .conversationId(conversationID)
                 .messageType(MessageType.USER.getValue())
-                .createdAt(DateUtils.nowIsoString())
                 .build();
     }
 
@@ -81,20 +80,40 @@ public class ChatHelper {
     public static Message mapMessage(MessageEntity source) {
         return Message.builder()
                 .id(source.id())
-                .conversationId(source.coversationId())
+                .conversationId(source.conversationId())
                 .content(source.content())
                 .messageType(source.messageType())
                 .createdAt(DateUtils.toIsoString(source.createdAt()))
                 .build();
     }
 
-    public static MessageEntity mapFromAi(String conversationId, org.springframework.ai.chat.messages.Message source) {
-        return MessageEntity.builder()
+    public static MessageEntity mapMessage(Message source, boolean newEntity) {
+        return new MessageEntity()
+                .id(source.id())
+                .conversationId(source.conversationId())
+                .content(source.content())
+                .messageType(source.messageType())
+                .createdAt(DateUtils.fromIsoString(source.createdAt()))
+                .newEntity(newEntity);
+    }
+
+    public static Message mapFromAi(String conversationId, org.springframework.ai.chat.messages.Message source) {
+        return Message.builder()
                 .id(generateId())
-                .coversationId(conversationId)
+                .conversationId(conversationId)
                 .content(source.getContent())
                 .messageType(source.getMessageType().getValue())
-                .createdAt(DateUtils.now())
+                .createdAt(DateUtils.nowIsoString())
+                .build();
+    }
+
+    public static Message mapFromAi(String conversationId, org.springframework.ai.chat.messages.UserMessage source) {
+        return Message.builder()
+                .id(generateId())
+                .conversationId(conversationId)
+                .content(source.getContent())
+                .messageType(source.getMessageType().getValue())
+                .createdAt(DateUtils.nowIsoString())
                 .build();
     }
 
